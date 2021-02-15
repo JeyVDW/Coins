@@ -1,0 +1,30 @@
+name: Coins
+prefix: CS
+description: An universal economy plugin for Minecraft
+
+main: dev.minecode.coins.spigot.CoinsSpigot
+version: 0.1.0-Pre.1
+api-version: 1.8.8
+softdepend:
+  - Vault
+  - PlaceholderAPI
+
+author: MineCode
+authors:
+  - Jerome
+  - Leonard
+website: http://minecode.dev
+
+commands:
+  coins:
+    description: A managing coins-command
+    aliases: [ ]
+    usage: /coins <player> <add/set/remove> <amount>
+
+permissions:
+  coins.use:
+    description: Access to the command "/coins"
+  coins.see:
+    description: Access to the command "/coins [player]"
+  coins.modify:
+    description: Access to the command "/coins [player] add/remove/set [amount]"

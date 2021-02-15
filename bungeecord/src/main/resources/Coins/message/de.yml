@@ -1,0 +1,37 @@
+#  /$$      /$$ /$$                      /$$$$$$                  /$$
+# | $$$    /$$$|__/                     /$$__  $$                | $$
+# | $$$$  /$$$$ /$$ /$$$$$$$   /$$$$$$ | $$  \__/  /$$$$$$   /$$$$$$$  /$$$$$$
+# | $$ $$/$$ $$| $$| $$__  $$ /$$__  $$| $$       /$$__  $$ /$$__  $$ /$$__  $$
+# | $$  $$$| $$| $$| $$  \ $$| $$$$$$$$| $$      | $$  \ $$| $$  | $$| $$$$$$$$
+# | $$\  $ | $$| $$| $$  | $$| $$_____/| $$    $$| $$  | $$| $$  | $$| $$_____/
+# | $$ \/  | $$| $$| $$  | $$|  $$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$
+# |__/     |__/|__/|__/  |__/ \_______/ \______/  \______/  \_______/ \_______/
+
+noPermission: "&cCoins &8» &7Dazu hast du keine Rechte"
+noPlayer: "&cCoins &8» &7Dies kannst du nur als Spieler"
+playerNotOnline: "&cCoins &8» &7Der Spieler &b%targetName% &7ist nicht online"
+playerNotExists: "&cCoins &8» &7Der Spieler &b%arg-1% &7existiert nicht"
+noValidNumber: "&cCoins &8» &7Bitte gib eine gültige Zahl ein"
+syntax: "&9Coins &8» &7Du kannst die folgenden Befehle ausführen:"
+coins:
+  command:
+    syntax:
+      use: "&8- &6/coins &8- &7Zeige Deine Coins an"
+      see: "&8- &6/coins [Name] &8- &7Zeige die Coins eines Spielers an"
+      modify: "&8- &6/coins [Name] add/remove/set [Betrag] &8- &7Ändere die Coins eines Spielers"
+    # /coins
+    yourcoins: "&aCoins &8» &7Du hast derzeit &6%executerCoins% &7Coins"
+    # /coins [player]
+    see: "&aCoins &8» &7Der Spieler &b%targetName% &7hat derzeit &6%targetCoins% &7Coins"
+    # /coins [player] add [amount]
+    add:
+      success: "&aCoins &8» &7Du hast &b%targetName% &6%arg-3% &7Coins hinzugefügt"
+      failed: "&cCoins &8» &7Dem Spieler &b%targetName% konnten keine &6%arg-3% &7Coins hinzugefügt werden"
+    # /coins [player] remove [amount]
+    remove:
+      success: "&aCoins &8» &7Du hast &b%targetName% &6%arg-3% &7Coins genommen"
+      failed: "&cCoins &8» &7Dem Spieler &b%targetName% konnten keine &6%arg-3% &7Coins genommen werden"
+    # /coins [player] set [amount]
+    set:
+      success: "&aCoins &8» &7Du hast die Coins von &e%oldCoins% &7auf &6%targetCoins% &7Coins gesetzt"
+      failed: "&cCoins &8» &7Die Coins von &b%targetName% konnten nicht auf &6%arg-3% &7Coins gesetzt werden"
