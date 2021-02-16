@@ -11,12 +11,15 @@
 
     <artifactId>api</artifactId>
 
+    <name>API</name>
+    <url>https://github.com/MineCodeDEV/Core/tree/master/api</url>
+
     <dependencies>
         <!-- MineCode Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>api</artifactId>
-            <version>0.1.0-Pre.32</version>
+            <version>0.1.0-Pre.36</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.gson</groupId>
@@ -27,6 +30,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>

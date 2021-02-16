@@ -15,6 +15,10 @@
         <module>bungeecord</module>
     </modules>
 
+    <name>Coins</name>
+    <description>A universal economy plugin for Minecraft</description>
+    <url>https://github.com/MineCodeDEV/Coins</url>
+
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>

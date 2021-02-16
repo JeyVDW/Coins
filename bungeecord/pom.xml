@@ -11,6 +11,9 @@
 
     <artifactId>bungeecord</artifactId>
 
+    <name>BungeeCord</name>
+    <url>https://github.com/MineCodeDEV/Coins/tree/master/bungeecord</url>
+
     <repositories>
         <repository>
             <id>bungeecord-repo</id>
@@ -36,7 +39,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>bungeecord</artifactId>
-            <version>0.1.0-Pre.32</version>
+            <version>0.1.0-Pre.36</version>
         </dependency>
 
         <!-- BungeeCord -->
@@ -56,6 +59,7 @@
     </dependencies>
 
     <build>
+        <finalName>${project.parent.name}-${project.name}-${project.version}</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
