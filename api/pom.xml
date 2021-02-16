@@ -19,7 +19,7 @@
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>api</artifactId>
-            <version>0.1.0-Pre.36</version>
+            <version>0.1.0-Pre.41</version>
             <exclusions>
                 <exclusion>
                     <groupId>com.google.code.gson</groupId>

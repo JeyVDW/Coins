@@ -21,7 +21,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     private static FileObject fileObject = CoinsAPI.getInstance().getFileManager().getData();
     private static ConfigurationNode conf = fileObject.getConf();
 
-    private static int startCoins = CoreAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
+    private static int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
 
     private int coins;
     private CorePlayer corePlayer;
@@ -61,8 +61,9 @@ public class CoinsPlayerProvider implements CoinsPlayer {
 
             if (!exists) {
                 create(corePlayer.getID(), startCoins);
-                coins = startCoins;
-            } else reload();
+            }
+
+            reload();
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
