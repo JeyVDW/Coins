@@ -1,8 +1,8 @@
-package dev.minecode.coins.bungeecord.object;
+package dev.minecode.coins.spigot.object;
 
 import dev.minecode.core.api.object.LanguageAbstract;
 
-public enum CoinsLanguage implements LanguageAbstract {
+public enum CoinsLanguageSpigot implements LanguageAbstract {
 
     noPermission("noPermission"),
     noPlayers("noPlayers"),
@@ -25,7 +25,7 @@ public enum CoinsLanguage implements LanguageAbstract {
 
     private String[] path;
 
-    CoinsLanguage(String... path) {
+    CoinsLanguageSpigot(String... path) {
         this.path = path;
     }
 
