@@ -17,7 +17,7 @@ public class CoinsCommon {
     public CoinsCommon() {
         makeInstances();
 
-        if (CoreAPI.getInstance().isUsingSQL()) {
+        if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
             try {
                 CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("CREATE TABLE IF NOT EXISTS minecode_coins (ID INT, COINS INT , PRIMARY KEY (ID))");
             } catch (SQLException throwables) {
@@ -27,7 +27,7 @@ public class CoinsCommon {
 
         UpdateManager updateManager = CoreAPI.getInstance().getUpdateManager();
         if (updateManager.updateAvailable()) {
-            System.out.println("[" + CoreAPI.getInstance().getPluginName() + "] There is a newer Version available! You can download it at " + updateManager.getReleaseURL(updateManager.getMatchingRelease()));
+            System.out.println("[" + CoreAPI.getInstance().getPluginManager().getPluginName() + "] There is a newer Version available! You can download it at " + updateManager.getReleaseURL(updateManager.getMatchingRelease()));
         }
     }
 

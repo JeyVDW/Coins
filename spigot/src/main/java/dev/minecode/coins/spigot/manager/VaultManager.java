@@ -18,6 +18,7 @@ public class VaultManager {
     private Economy econ;
 
     private Plugin vaultPlugin;
+    private boolean vaultEnabled;
 
     // config
     private boolean vaultConfig;
@@ -32,9 +33,10 @@ public class VaultManager {
 
         if (!vaultConfig && !vaultPlugin.isEnabled()) return;
 
-        setupEconomy();
+        if (setupEconomy())
+            vaultEnabled = true;
 
-        if (CoreAPI.getInstance().isUsingSQL())
+        if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
             runEconomyChecker();
     }
 
@@ -45,7 +47,7 @@ public class VaultManager {
         RegisteredServiceProvider<Economy> rsp = CoinsSpigot.getInstance().getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return false;
 
-        if ((econ = rsp.getProvider()) != null) CoinsSpigot.getInstance().setVaultEnabled(true);
+        if ((econ = rsp.getProvider()) != null) vaultEnabled = true;
 
         return false;
     }
@@ -55,7 +57,7 @@ public class VaultManager {
             @Override
             public void run() {
                 for (Player player : Bukkit.getOnlinePlayers()) {
-                    CoinsPlayer coinsPlayer = CoinsAPI.getInstance().getCoinsPlayer(player.getUniqueId());
+                    CoinsPlayer coinsPlayer = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(player.getUniqueId());
                     Economy economy = CoinsSpigot.getInstance().getVaultManager().getEcon();
                     double vaultBalance = economy.getBalance(player);
 
@@ -73,5 +75,13 @@ public class VaultManager {
 
     public Economy getEcon() {
         return econ;
+    }
+
+    public boolean isVaultEnabled() {
+        return vaultEnabled;
+    }
+
+    public void setVaultEnabled(boolean vaultEnabled) {
+        this.vaultEnabled = vaultEnabled;
     }
 }

@@ -26,7 +26,7 @@ public class CoinsCommand extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender commandSender, String[] args) {
-        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getCoinsPlayer(commandSender.getName());
+        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(commandSender.getName());
 
         if (!commandSender.hasPermission("coins.use")) {
             commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noPermission)
@@ -53,7 +53,7 @@ public class CoinsCommand extends Command implements TabExecutor {
                 return;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
 
             if (coinsTarget == null) {
                 commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.playernotExists)
@@ -74,7 +74,7 @@ public class CoinsCommand extends Command implements TabExecutor {
                 return;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
 
             if (coinsTarget == null) {
                 commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.playernotExists)

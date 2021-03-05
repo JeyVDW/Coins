@@ -20,9 +20,9 @@ coins:
       see: "&8- &6/coins [name] &8- &7Displays a player's coins"
       modify: "&8- &6/coins [name] add/remove/set [amount] &8- &7Change a player's coins"
     # /coins
-    yourcoins: "&aCoins &8» &7You currently have &6%executerCoins% &7Coins"
+    yourcoins: "&9Coins &8» &7You currently have &6%executerCoins% &7Coins"
     # /coins [player]
-    see: "&aCoins &8» &7The player &b%targetName% &7currently has &6%targetCoins% &7coins"
+    see: "&9Coins &8» &7The player &b%targetName% &7currently has &6%targetCoins% &7coins"
     # /coins [player] add [amount]
     add:
       success: "&aCoins &8» &7You added &b%targetName% &6%arg-3% &7coins"

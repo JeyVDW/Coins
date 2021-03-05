@@ -12,11 +12,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CoinsSpigot extends JavaPlugin {
 
     private static CoinsSpigot instance;
+
     private CoreSpigot coreSpigot;
     private CoinsCommon coinsCommon;
 
     private VaultManager vaultManager;
-    private boolean vaultEnabled;
 
     public static CoinsSpigot getInstance() {
         return instance;
@@ -52,13 +52,5 @@ public class CoinsSpigot extends JavaPlugin {
 
     public VaultManager getVaultManager() {
         return vaultManager;
-    }
-
-    public boolean isVaultEnabled() {
-        return vaultEnabled;
-    }
-
-    public void setVaultEnabled(boolean vaultEnabled) {
-        this.vaultEnabled = vaultEnabled;
     }
 }

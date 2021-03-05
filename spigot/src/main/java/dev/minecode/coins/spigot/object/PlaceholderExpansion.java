@@ -35,7 +35,7 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
         if (identifier.equals("playercoins")) {
-            return String.valueOf(CoinsAPI.getInstance().getCoinsPlayer(player.getUniqueId()).getCoins());
+            return String.valueOf(CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(player.getUniqueId()).getCoins());
         }
         return null;
     }

@@ -3,24 +3,21 @@ package dev.minecode.coins.common.api;
 import dev.minecode.coins.api.CoinsAPI;
 import dev.minecode.coins.api.manager.EventManager;
 import dev.minecode.coins.api.manager.FileManager;
+import dev.minecode.coins.api.manager.PlayerManager;
 import dev.minecode.coins.api.manager.ReplaceManager;
-import dev.minecode.coins.api.object.CoinsPlayer;
-import dev.minecode.coins.common.CoinsCommon;
 import dev.minecode.coins.common.api.manager.EventManagerProvider;
 import dev.minecode.coins.common.api.manager.FileManagerProvider;
+import dev.minecode.coins.common.api.manager.PlayerManagerProvider;
 import dev.minecode.coins.common.api.manager.ReplaceManagerProvider;
-import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
 
-import java.util.UUID;
-
 public class CoinsAPIProvider extends CoinsAPI {
 
-    private FileManagerProvider fileManagerProvider;
     private EventManagerProvider eventManagerProvider;
+    private FileManagerProvider fileManagerProvider;
+    private PlayerManagerProvider playerManagerProvider;
 
     public CoinsAPIProvider() {
         makeInstances();
@@ -28,13 +25,24 @@ public class CoinsAPIProvider extends CoinsAPI {
 
     private void makeInstances() {
         CoinsAPI.setInstance(this);
-        fileManagerProvider = new FileManagerProvider();
         eventManagerProvider = new EventManagerProvider();
+        fileManagerProvider = new FileManagerProvider();
+        playerManagerProvider = new PlayerManagerProvider();
+    }
+
+    @Override
+    public EventManager getEventManager() {
+        return eventManagerProvider;
     }
 
     @Override
     public FileManager getFileManager() {
         return fileManagerProvider;
+    }
+
+    @Override
+    public PlayerManager getPlayerManager() {
+        return playerManagerProvider;
     }
 
     @Override
@@ -50,35 +58,5 @@ public class CoinsAPIProvider extends CoinsAPI {
     @Override
     public ReplaceManager getReplaceManager(Language language, LanguageAbstract path) {
         return new ReplaceManagerProvider(language, path);
-    }
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManagerProvider;
-    }
-
-    @Override
-    public CoinsPlayer getCoinsPlayer(CorePlayer corePlayer) {
-        if (corePlayer == null) return null;
-
-        return CoinsCommon.getInstance().getCoinsPlayerAddon().newCoinsPlayer(corePlayer);
-    }
-
-    @Override
-    public CoinsPlayer getCoinsPlayer(int id) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getCorePlayer(id);
-        return getCoinsPlayer(corePlayer);
-    }
-
-    @Override
-    public CoinsPlayer getCoinsPlayer(UUID uuid) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getCorePlayer(uuid);
-        return getCoinsPlayer(corePlayer);
-    }
-
-    @Override
-    public CoinsPlayer getCoinsPlayer(String name) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getCorePlayer(name);
-        return getCoinsPlayer(corePlayer);
     }
 }

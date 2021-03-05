@@ -50,12 +50,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return CoinsAPI.getInstance().getCoinsPlayer(playerName) != null;
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName) != null;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return CoinsAPI.getInstance().getCoinsPlayer(offlinePlayer.getUniqueId()) != null;
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()) != null;
     }
 
     @Override
@@ -71,13 +71,13 @@ public class EconomyIntegration implements Economy {
     @Override
     public double getBalance(String playerName) {
         if (!hasAccount(playerName)) return 0.00;
-        return CoinsAPI.getInstance().getCoinsPlayer(playerName).getCoins();
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName).getCoins();
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         if (!hasAccount(offlinePlayer)) return 0.00;
-        return CoinsAPI.getInstance().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins();
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins();
     }
 
     @Override
@@ -92,12 +92,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return CoinsAPI.getInstance().getCoinsPlayer(playerName).getCoins() <= amount;
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName).getCoins() <= amount;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double amount) {
-        return CoinsAPI.getInstance().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins() <= amount;
+        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins() <= amount;
     }
 
     @Override
@@ -120,7 +120,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getCoinsPlayer(playerName);
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName);
         corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -136,7 +136,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getCoinsPlayer(offlinePlayer.getUniqueId());
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId());
         corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -160,7 +160,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getCoinsPlayer(playerName);
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName);
         corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -174,7 +174,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getCoinsPlayer(offlinePlayer.getUniqueId());
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId());
         corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -252,12 +252,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        return CoreAPI.getInstance().getCorePlayer(playerName) != null;
+        return CoreAPI.getInstance().getPlayerManager().getCorePlayer(playerName) != null;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        return CoreAPI.getInstance().getCorePlayer(offlinePlayer.getUniqueId()) != null;
+        return CoreAPI.getInstance().getPlayerManager().getCorePlayer(offlinePlayer.getUniqueId()) != null;
     }
 
     @Override

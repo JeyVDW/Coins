@@ -14,16 +14,13 @@ public class FileManagerProvider implements FileManager {
     }
 
     private void makeInstances() {
-        config = CoreAPI.getInstance().getFileObject("config.yml", CoreAPI.getInstance().getPluginName());
-        data = CoreAPI.getInstance().getFileObject("data.yml", CoreAPI.getInstance().getPluginName());
+        config = CoreAPI.getInstance().getFileManager().getFileObject("config.yml", CoreAPI.getInstance().getPluginManager().getPluginName());
+        data = CoreAPI.getInstance().getFileManager().getFileObject("data.yml", CoreAPI.getInstance().getPluginManager().getPluginName());
     }
 
     @Override
     public boolean saveDatas() {
-        boolean saved = true;
-        if (!data.save())
-            saved = false;
-        return saved;
+        return data.save();
     }
 
     @Override

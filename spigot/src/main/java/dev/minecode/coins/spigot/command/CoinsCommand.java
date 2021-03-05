@@ -21,7 +21,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public boolean onCommand(CommandSender commandSender, Command command, String s, String[] args) {
-        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getCoinsPlayer(commandSender.getName());
+        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(commandSender.getName());
 
         if (!commandSender.hasPermission("coins.use")) {
             commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.noPermission)
@@ -48,7 +48,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
 
             if (coinsTarget == null) {
                 commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.playernotExists)
@@ -69,7 +69,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
 
             if (coinsTarget == null) {
                 commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.playernotExists)

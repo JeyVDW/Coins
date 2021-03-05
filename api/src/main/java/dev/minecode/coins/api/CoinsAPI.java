@@ -2,15 +2,12 @@ package dev.minecode.coins.api;
 
 import dev.minecode.coins.api.manager.EventManager;
 import dev.minecode.coins.api.manager.FileManager;
+import dev.minecode.coins.api.manager.PlayerManager;
 import dev.minecode.coins.api.manager.ReplaceManager;
-import dev.minecode.coins.api.object.CoinsPlayer;
 import dev.minecode.core.api.CoreAPI;
-import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
-
-import java.util.UUID;
 
 public abstract class CoinsAPI {
 
@@ -33,24 +30,16 @@ public abstract class CoinsAPI {
 
 
     // Manager
+    public abstract EventManager getEventManager();
+
     public abstract FileManager getFileManager();
+
+    public abstract PlayerManager getPlayerManager();
 
     public abstract ReplaceManager getReplaceManager(String message);
 
     public abstract ReplaceManager getReplaceManager(BaseComponent[] message);
 
     public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
-
-    public abstract EventManager getEventManager();
-
-
-    // Objects
-    public abstract CoinsPlayer getCoinsPlayer(CorePlayer corePlayer);
-
-    public abstract CoinsPlayer getCoinsPlayer(int id);
-
-    public abstract CoinsPlayer getCoinsPlayer(UUID uuid);
-
-    public abstract CoinsPlayer getCoinsPlayer(String name);
 
 }

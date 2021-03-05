@@ -36,7 +36,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
 
     private static void create(int id, int coins) {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                 CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_coins (ID, COINS) VALUES (" + id + ", " + coins + ")");
             } else {
                 conf.node(String.valueOf(id), "coins").set(coins);
@@ -52,7 +52,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
 
     public void load() {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                 statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
                 resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE ID = " + corePlayer.getID() + "");
                 exists = resultSet.next();
@@ -72,7 +72,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     @Override
     public boolean reload() {
         try {
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                 resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE ID = '" + corePlayer.getID() + "'");
                 if (resultSet.next()) {
                     coins = resultSet.getInt("COINS");
@@ -94,7 +94,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
         try {
             corePlayer.reload();
 
-            if (CoreAPI.getInstance().isUsingSQL()) {
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
                 resultSet.updateDouble("COINS", coins);
                 resultSet.updateRow();
                 return true;
