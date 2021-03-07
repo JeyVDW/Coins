@@ -161,15 +161,14 @@ public class CoinsCommand extends Command implements TabExecutor {
 
         if (args.length == 1) {
             list.add("help");
-            for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
-                list.add(proxiedPlayer.getName());
-            }
+            if (commandSender.hasPermission("coins.see") || commandSender.hasPermission("coins.modify"))
+                for (ProxiedPlayer proxiedPlayer : ProxyServer.getInstance().getPlayers()) {
+                    list.add(proxiedPlayer.getName());
+                }
             search = args[0].toLowerCase();
         }
 
         if (args.length == 2) {
-            if (commandSender.hasPermission("coins.see"))
-                list.add("see");
             if (commandSender.hasPermission("coins.modify")) {
                 list.add("add");
                 list.add("remove");

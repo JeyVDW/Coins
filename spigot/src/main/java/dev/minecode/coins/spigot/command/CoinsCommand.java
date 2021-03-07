@@ -95,11 +95,16 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
                             .args(command.getName(), args, "arg").chatcolorAll().getMessage());
                     return true;
                 }
+
+                if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
+                    coinsTarget.reload();
+                else
+                    coinsTarget.save();
+
                 commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.coinsCommandAddSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
                         .args(command.getName(), args, "arg").chatcolorAll().getMessage());
-                coinsTarget.save();
                 return true;
             }
 
@@ -113,7 +118,11 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                coinsTarget.save();
+                if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
+                    coinsTarget.reload();
+                else
+                    coinsTarget.save();
+
                 commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.coinsCommandRemoveSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
@@ -131,7 +140,10 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
                     return true;
                 }
 
-                coinsTarget.save();
+                if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
+                    coinsTarget.reload();
+                else
+                    coinsTarget.save();
                 commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageSpigot.coinsCommandSetSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
@@ -156,14 +168,13 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
 
         if (args.length == 1) {
             list.add("help");
-            for (Player player : Bukkit.getOnlinePlayers())
-                list.add(player.getName());
+            if (commandSender.hasPermission("coins.see") || commandSender.hasPermission("coins.modify"))
+                for (Player player : Bukkit.getOnlinePlayers())
+                    list.add(player.getName());
             search = args[0].toLowerCase();
         }
 
         if (args.length == 2) {
-            if (commandSender.hasPermission("coins.see"))
-                list.add("see");
             if (commandSender.hasPermission("coins.modify")) {
                 list.add("add");
                 list.add("remove");

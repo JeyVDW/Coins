@@ -157,6 +157,8 @@ public class EconomyIntegration implements Economy {
         double balance = getBalance(playerName);
         double finalBalance = balance + amount;
 
+        if (amount < 0)
+            return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
@@ -171,6 +173,8 @@ public class EconomyIntegration implements Economy {
         double balance = getBalance(offlinePlayer);
         double finalBalance = balance + amount;
 
+        if (amount < 0)
+            return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 

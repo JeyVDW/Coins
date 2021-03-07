@@ -31,13 +31,13 @@ public class VaultManager {
         vaultConfig = conf.node("vault").getBoolean();
         refreshDelay = conf.node("refreshDelay").getLong();
 
-        if (!vaultConfig && !vaultPlugin.isEnabled()) return;
+        if (!vaultConfig || !vaultPlugin.isEnabled()) return;
 
-        if (setupEconomy())
+        if (setupEconomy()) {
             vaultEnabled = true;
-
-        if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
-            runEconomyChecker();
+            if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
+                runEconomyChecker();
+        }
     }
 
     public boolean setupEconomy() {
@@ -47,9 +47,7 @@ public class VaultManager {
         RegisteredServiceProvider<Economy> rsp = CoinsSpigot.getInstance().getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return false;
 
-        if ((econ = rsp.getProvider()) != null) vaultEnabled = true;
-
-        return false;
+        return (econ = rsp.getProvider()) != null;
     }
 
     public void runEconomyChecker() {

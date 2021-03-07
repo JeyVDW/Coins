@@ -160,6 +160,6 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     }
 
     public boolean removeCoinsWithoutVault(int coins) {
-        return setCoinsWithoutVault(this.coins + coins);
+        return setCoinsWithoutVault(this.coins - coins);
     }
 }
