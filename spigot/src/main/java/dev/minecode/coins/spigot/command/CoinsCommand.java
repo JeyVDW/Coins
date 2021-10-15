@@ -166,9 +166,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
         List<String> list = new ArrayList<>();
         String search = null;
 
-        if (!commandSender.hasPermission("coins.use")) {
-            return tab;
-        }
+        if (!commandSender.hasPermission("coins.use")) return tab;
 
         if (args.length == 1) {
             list.add("help");
@@ -179,18 +177,18 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 2) {
-            if (commandSender.hasPermission("coins.modify")) {
-                list.add("add");
-                list.add("remove");
-                list.add("set");
-            }
+            if (!args[0].equalsIgnoreCase("help"))
+                if (commandSender.hasPermission("coins.modify")) {
+                    list.add("add");
+                    list.add("remove");
+                    list.add("set");
+                }
             search = args[1].toLowerCase();
         }
 
-        for (String start : list) {
+        for (String start : list)
             if (start.toLowerCase().startsWith(search))
                 tab.add(start);
-        }
 
         return tab;
     }
