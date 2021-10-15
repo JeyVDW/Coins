@@ -14,6 +14,7 @@ coins:
       info: "&9Coins &8» &7Du kannst die folgenden Befehle ausführen:"
       use: "&8- &6/coins &8- &7Zeige Deine Coins an"
       see: "&8- &6/coins [Name] &8- &7Zeige die Coins eines Spielers an"
+      pay: "&8- &6/coins [Name] pay [Betrag] &8- &7Überweise Coins an einen Spieler"
       modify: "&8- &6/coins [Name] add/remove/set [Betrag] &8- &7Ändere die Coins eines Spielers"
     playerNotExists: "&cCoins &8» &7Der Spieler &b%arg-1% &7existiert nicht"
     noValidNumber: "&cCoins &8» &7Bitte gib eine gültige Zahl ein"
@@ -33,3 +34,8 @@ coins:
     set:
       success: "&aCoins &8» &7Du hast die Coins von &e%oldCoins% &7auf &6%targetCoins% &7Coins gesetzt"
       failed: "&cCoins &8» &7Die Coins von &b%targetName% konnten nicht auf &6%arg-3% &7Coins gesetzt werden"
+    pay:
+      notEnoughtCoins: "&cCoins &8» &7Derzeit hast du &6%executerCoins%&7, weshalb du keine &6%amount% &7Coins an &b%targetName% &7senden kannst"
+      failed: "&cCoins &8» &7Es konnten keine &6%amount% &7Coins an &b%targetName% &7gesendet werden"
+      successfulPaid: "&aCoins &8» &7Es wurden &6%amount% &7Coins an &b%targetName% &7gesendet"
+      successfullyReceived: "&aCoins &8» &7Dir wurden &6%amount% &7Coins von &b%executerName% &7gesendet"

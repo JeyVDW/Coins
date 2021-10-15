@@ -9,6 +9,7 @@ public enum CoinsLanguageSpigot implements LanguageAbstract {
     coinsCommandSyntaxInfo("coins", "command", "syntax", "info"),
     coinsCommandSyntaxUse("coins", "command", "syntax", "use"),
     coinsCommandSyntaxSee("coins", "command", "syntax", "see"),
+    coinsCommandSyntaxPay("coins", "command", "syntax", "pay"),
     coinsCommandSyntaxModify("coins", "command", "syntax", "modify"),
     coinsCommandPlayerNotExists("coins", "command", "playerNotExists"),
     coinsCommandNoValidNumber("coins", "command", "noValidNumber"),
@@ -19,7 +20,11 @@ public enum CoinsLanguageSpigot implements LanguageAbstract {
     coinsCommandRemoveSuccess("coins", "command", "remove", "success"),
     coinsCommandRemoveFailed("coins", "command", "remove", "failed"),
     coinsCommandSetSuccess("coins", "command", "set", "success"),
-    coinsCommandSetFailed("coins", "command", "set", "failed");
+    coinsCommandSetFailed("coins", "command", "set", "failed"),
+    coinsCommandPayNotEnoughtCoins("coins", "command", "pay", "notEnoughtCoins"),
+    coinsCommandPayFailed("coins", "command", "pay", "failed"),
+    coinsCommandSuccessfulPaid("coins", "command", "pay", "successfulPaid"),
+    coinsCommandSuccessfulReceived("coins", "command", "pay", "successfullyReceived");
 
     private final String[] path;
 

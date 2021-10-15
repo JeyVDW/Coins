@@ -14,6 +14,7 @@ coins:
       info: "&9Coins &8» &7You can run the following commands:"
       use: "&8- &6/coins &8- &7Displays your coins"
       see: "&8- &6/coins [name] &8- &7Displays a player's coins"
+      pay: "&8- &6/coins [Name] pay [Amount] &8- &7Send coins to a player"
       modify: "&8- &6/coins [name] add/remove/set [amount] &8- &7Change a player's coins"
     playerNotExists: "&cCoins &8» &7The player &b%arg-1% &7does not exist"
     noValidNumber: "&cCoins &8» &7Please enter a valid number"
@@ -33,3 +34,8 @@ coins:
     set:
       success: "&aCoins &8» &7You have set the coins from &e%oldCoins% &7to &6%targetCoins% &7coins"
       failed: "&cCoins &8» &7The coins from &b%targetName% &7could not be set to &6%arg-3% &7coins"
+    pay:
+      notEnoughtCoins: "&cCoins &8» &7Thetime you have &6%executerCoins%&7, which is why you can't send &6%amount% &7Coins to &b%targetName% &7"
+      failed: "&cCoins &8» &6%amount% &7Coins could not be sent to &b%targetName%"
+      successfulPaid: "&aCoins &8» &7Send &6%amount% &7Coins to &b%targetName% &7"
+      successfullyReceived: "&aCoins &8» &7The &6%amount% &7Coins were sent to you by &b%executerName% &7"
