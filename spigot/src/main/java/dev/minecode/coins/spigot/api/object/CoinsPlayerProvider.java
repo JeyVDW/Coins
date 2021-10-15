@@ -1,9 +1,9 @@
 package dev.minecode.coins.spigot.api.object;
 
 import dev.minecode.coins.api.CoinsAPI;
-import dev.minecode.coins.api.event.CoinsUpdateEvent;
 import dev.minecode.coins.api.object.CoinsPlayer;
 import dev.minecode.coins.spigot.CoinsSpigot;
+import dev.minecode.coins.spigot.event.CoinsUpdateEvent;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
@@ -23,9 +23,8 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     private static final FileObject playersFileObject = CoinsAPI.getInstance().getFileManager().getPlayers();
     private static final int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
     private static ConfigurationNode playersConf;
-
-    private int coins;
     private final CorePlayer corePlayer;
+    private int coins;
     private boolean exists;
     private Statement statement;
     private ResultSet resultSet;
@@ -136,12 +135,13 @@ public class CoinsPlayerProvider implements CoinsPlayer {
                 return CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(offlinePlayer, diff).type == EconomyResponse.ResponseType.SUCCESS;
         }
 
-        CoinsAPI.getInstance().getEventManager().callEvent(new CoinsUpdateEvent(this, coins));
         return setCoinsWithoutVault(coins);
     }
 
     public boolean setCoinsWithoutVault(int coins) {
         if (coins < 0) return false;
+
+        Bukkit.getPluginManager().callEvent(new CoinsUpdateEvent(this, this.coins));
 
         this.coins = coins;
         return true;

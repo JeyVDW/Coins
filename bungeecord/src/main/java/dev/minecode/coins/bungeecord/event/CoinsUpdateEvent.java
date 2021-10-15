@@ -1,12 +1,12 @@
-package dev.minecode.coins.api.event;
+package dev.minecode.coins.bungeecord.event;
 
-import dev.minecode.coins.api.object.CoinsEvent;
 import dev.minecode.coins.api.object.CoinsPlayer;
+import net.md_5.bungee.api.plugin.Event;
 
-public class CoinsUpdateEvent implements CoinsEvent {
+public class CoinsUpdateEvent extends Event {
 
-    private CoinsPlayer coinsPlayer;
-    private double oldCoins;
+    private final CoinsPlayer coinsPlayer;
+    private final double oldCoins;
 
     public CoinsUpdateEvent(CoinsPlayer coinsPlayer, double oldCoins) {
         this.coinsPlayer = coinsPlayer;
@@ -20,4 +20,5 @@ public class CoinsUpdateEvent implements CoinsEvent {
     public double getOldCoins() {
         return oldCoins;
     }
+
 }

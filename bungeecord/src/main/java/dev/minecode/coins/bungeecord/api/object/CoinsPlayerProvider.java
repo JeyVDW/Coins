@@ -1,11 +1,12 @@
 package dev.minecode.coins.bungeecord.api.object;
 
 import dev.minecode.coins.api.CoinsAPI;
-import dev.minecode.coins.api.event.CoinsUpdateEvent;
 import dev.minecode.coins.api.object.CoinsPlayer;
+import dev.minecode.coins.bungeecord.event.CoinsUpdateEvent;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
+import net.md_5.bungee.api.ProxyServer;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -22,9 +23,8 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     private static final FileObject playersFileObject = CoinsAPI.getInstance().getFileManager().getPlayers();
     private static final int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
     private static ConfigurationNode playersConf;
-
-    private int coins;
     private final CorePlayer corePlayer;
+    private int coins;
     private boolean exists;
     private Statement statement;
     private ResultSet resultSet;
@@ -126,7 +126,8 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     public boolean setCoins(int coins) {
         if (coins < 0) return false;
 
-        CoinsAPI.getInstance().getEventManager().callEvent(new CoinsUpdateEvent(this, this.coins));
+        ProxyServer.getInstance().getPluginManager().callEvent(new CoinsUpdateEvent(this, this.coins));
+
         this.coins = coins;
         return true;
     }

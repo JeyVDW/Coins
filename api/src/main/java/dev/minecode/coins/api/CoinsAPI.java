@@ -1,6 +1,5 @@
 package dev.minecode.coins.api;
 
-import dev.minecode.coins.api.manager.EventManager;
 import dev.minecode.coins.api.manager.FileManager;
 import dev.minecode.coins.api.manager.PlayerManager;
 import dev.minecode.coins.api.manager.ReplaceManager;
@@ -24,8 +23,6 @@ public abstract class CoinsAPI {
 
 
     // Manager
-    public abstract EventManager getEventManager();
-
     public abstract FileManager getFileManager();
 
     public abstract PlayerManager getPlayerManager();

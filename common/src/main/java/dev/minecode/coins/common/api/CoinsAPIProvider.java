@@ -1,11 +1,9 @@
 package dev.minecode.coins.common.api;
 
 import dev.minecode.coins.api.CoinsAPI;
-import dev.minecode.coins.api.manager.EventManager;
 import dev.minecode.coins.api.manager.FileManager;
 import dev.minecode.coins.api.manager.ReplaceManager;
 import dev.minecode.coins.common.CoinsCommon;
-import dev.minecode.coins.common.api.manager.EventManagerProvider;
 import dev.minecode.coins.common.api.manager.FileManagerProvider;
 import dev.minecode.coins.common.api.manager.PlayerManagerProvider;
 import dev.minecode.coins.common.api.manager.ReplaceManagerProvider;
@@ -17,7 +15,6 @@ import net.md_5.bungee.api.chat.BaseComponent;
 
 public class CoinsAPIProvider extends CoinsAPI {
 
-    private EventManagerProvider eventManagerProvider;
     private FileManagerProvider fileManagerProvider;
 
     private CorePlugin thisCorePlugin;
@@ -31,12 +28,6 @@ public class CoinsAPIProvider extends CoinsAPI {
 
         thisCorePlugin = CoreAPI.getInstance().getPluginManager().getPlugin("Coins");
         fileManagerProvider = new FileManagerProvider();
-        eventManagerProvider = new EventManagerProvider();
-    }
-
-    @Override
-    public EventManager getEventManager() {
-        return eventManagerProvider;
     }
 
     @Override
