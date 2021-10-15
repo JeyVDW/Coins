@@ -4,16 +4,14 @@ import dev.minecode.core.api.object.LanguageAbstract;
 
 public enum CoinsLanguageSpigot implements LanguageAbstract {
 
-    noPermission("noPermission"),
-    noPlayers("noPlayers"),
-    playerNotOnline("playerNotOnline"),
-    playernotExists("playerNotExists"),
-    noValidNumber("noValidNumber"),
-    syntax("syntax"),
 
+    coinsCommandNoPermission("coins", "command", "noPermission"),
+    coinsCommandSyntaxInfo("coins", "command", "syntax", "info"),
     coinsCommandSyntaxUse("coins", "command", "syntax", "use"),
     coinsCommandSyntaxSee("coins", "command", "syntax", "see"),
     coinsCommandSyntaxModify("coins", "command", "syntax", "modify"),
+    coinsCommandPlayerNotExists("coins", "command", "playerNotExists"),
+    coinsCommandNoValidNumber("coins", "command", "noValidNumber"),
     coinsCommandYourcoins("coins", "command", "yourcoins"),
     coinsCommandSee("coins", "command", "see"),
     coinsCommandAddSuccess("coins", "command", "add", "success"),
@@ -23,7 +21,7 @@ public enum CoinsLanguageSpigot implements LanguageAbstract {
     coinsCommandSetSuccess("coins", "command", "set", "success"),
     coinsCommandSetFailed("coins", "command", "set", "failed");
 
-    private String[] path;
+    private final String[] path;
 
     CoinsLanguageSpigot(String... path) {
         this.path = path;

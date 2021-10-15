@@ -2,8 +2,8 @@ package dev.minecode.coins.spigot;
 
 import dev.minecode.coins.common.CoinsCommon;
 import dev.minecode.coins.spigot.command.CoinsCommand;
+import dev.minecode.coins.spigot.manager.PlayerManagerProviderAddon;
 import dev.minecode.coins.spigot.manager.VaultManager;
-import dev.minecode.coins.spigot.object.CoinsPlayerAddonProvider;
 import dev.minecode.coins.spigot.object.PlaceholderExpansion;
 import dev.minecode.core.spigot.CoreSpigot;
 import org.bukkit.Bukkit;
@@ -12,9 +12,6 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class CoinsSpigot extends JavaPlugin {
 
     private static CoinsSpigot instance;
-
-    private CoreSpigot coreSpigot;
-    private CoinsCommon coinsCommon;
 
     private VaultManager vaultManager;
 
@@ -35,12 +32,10 @@ public class CoinsSpigot extends JavaPlugin {
 
     private void makeInstances() {
         instance = this;
-        coreSpigot = new CoreSpigot(this);
-        coinsCommon = new CoinsCommon();
-        CoinsCommon.getInstance().setCoinsPlayerAddon(new CoinsPlayerAddonProvider());
+        CoreSpigot.getInstance().registerPlugin(this, true);
+        CoinsCommon.getInstance().setPlayerManagerProvider(new PlayerManagerProviderAddon());
 
-        if (getServer().getPluginManager().getPlugin("Vault") != null)
-            vaultManager = new VaultManager();
+        vaultManager = new VaultManager();
 
         if (Bukkit.getPluginManager().getPlugin("PlaceholderAPI") != null)
             new PlaceholderExpansion(this).register();

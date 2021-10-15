@@ -13,7 +13,7 @@ import java.util.List;
 public class EconomyIntegration implements Economy {
     @Override
     public boolean isEnabled() {
-        return CoinsSpigot.getInstance().isEnabled();
+        return CoinsSpigot.getInstance().getVaultManager().isVaultEnabled();
     }
 
     @Override
@@ -28,14 +28,15 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public int fractionalDigits() {
-        return 2;
+        return 0;
     }
 
     @Override
     public String format(double amount) {
+        int round = Integer.parseInt(String.valueOf(Math.round(amount)));
         if (amount == 1.00 || amount == 0.01)
-            return String.format("%e %s", amount, currencyNameSingular());
-        return String.format("%e %s", amount, currencyNamePlural());
+            return String.format("%d %s", round, currencyNameSingular());
+        return String.format("%d %s", round, currencyNamePlural());
     }
 
     @Override
@@ -50,12 +51,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean hasAccount(String playerName) {
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName) != null;
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName) != null;
     }
 
     @Override
     public boolean hasAccount(OfflinePlayer offlinePlayer) {
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()) != null;
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId()) != null;
     }
 
     @Override
@@ -71,13 +72,13 @@ public class EconomyIntegration implements Economy {
     @Override
     public double getBalance(String playerName) {
         if (!hasAccount(playerName)) return 0.00;
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName).getCoins();
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName).getCoins();
     }
 
     @Override
     public double getBalance(OfflinePlayer offlinePlayer) {
         if (!hasAccount(offlinePlayer)) return 0.00;
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins();
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId()).getCoins();
     }
 
     @Override
@@ -92,12 +93,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean has(String playerName, double amount) {
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName).getCoins() <= amount;
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName).getCoins() <= amount;
     }
 
     @Override
     public boolean has(OfflinePlayer offlinePlayer, double amount) {
-        return CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId()).getCoins() <= amount;
+        return CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId()).getCoins() <= amount;
     }
 
     @Override
@@ -120,7 +121,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName);
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
         corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -136,7 +137,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId());
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
         corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -162,7 +163,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(playerName);
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
         corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -178,7 +179,7 @@ public class EconomyIntegration implements Economy {
         if (finalBalance < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(offlinePlayer.getUniqueId());
+        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
         corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
@@ -256,12 +257,12 @@ public class EconomyIntegration implements Economy {
 
     @Override
     public boolean createPlayerAccount(String playerName) {
-        return CoreAPI.getInstance().getPlayerManager().getCorePlayer(playerName) != null;
+        return CoreAPI.getInstance().getPlayerManager().getPlayer(playerName) != null;
     }
 
     @Override
     public boolean createPlayerAccount(OfflinePlayer offlinePlayer) {
-        return CoreAPI.getInstance().getPlayerManager().getCorePlayer(offlinePlayer.getUniqueId()) != null;
+        return CoreAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId()) != null;
     }
 
     @Override

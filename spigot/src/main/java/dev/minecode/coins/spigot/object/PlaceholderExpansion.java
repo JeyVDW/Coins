@@ -6,7 +6,7 @@ import org.bukkit.OfflinePlayer;
 
 public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.PlaceholderExpansion {
 
-    private CoinsSpigot plugin;
+    private final CoinsSpigot plugin;
 
     public PlaceholderExpansion(CoinsSpigot plugin) {
         this.plugin = plugin;
@@ -35,7 +35,7 @@ public class PlaceholderExpansion extends me.clip.placeholderapi.expansion.Place
     @Override
     public String onRequest(OfflinePlayer player, String identifier) {
         if (identifier.equals("playercoins")) {
-            return String.valueOf(CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(player.getUniqueId()).getCoins());
+            return String.valueOf(CoinsAPI.getInstance().getPlayerManager().getPlayer(player.getUniqueId()).getCoins());
         }
         return null;
     }

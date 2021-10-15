@@ -1,5 +1,6 @@
 package dev.minecode.coins.common.api.manager;
 
+import dev.minecode.coins.api.CoinsAPI;
 import dev.minecode.coins.api.manager.FileManager;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.FileObject;
@@ -7,20 +8,24 @@ import dev.minecode.core.api.object.FileObject;
 public class FileManagerProvider implements FileManager {
 
     private FileObject config;
-    private FileObject data;
+    private FileObject players;
 
     public FileManagerProvider() {
         makeInstances();
     }
 
     private void makeInstances() {
-        config = CoreAPI.getInstance().getFileManager().getFileObject("config.yml", CoreAPI.getInstance().getPluginManager().getPluginName());
-        data = CoreAPI.getInstance().getFileManager().getFileObject("data.yml", CoreAPI.getInstance().getPluginManager().getPluginName());
+        config = CoreAPI.getInstance().getFileManager().getFileObject(CoinsAPI.getInstance().getThisCorePlugin(), "config.yml");
+
+        if (!CoreAPI.getInstance().isUsingSQL())
+            players = CoreAPI.getInstance().getFileManager().getFileObject(CoinsAPI.getInstance().getThisCorePlugin(), "players.yml");
     }
 
     @Override
-    public boolean saveDatas() {
-        return data.save();
+    public boolean saveData() {
+        if (!CoreAPI.getInstance().isUsingSQL())
+            return players.save();
+        return false;
     }
 
     @Override
@@ -29,7 +34,7 @@ public class FileManagerProvider implements FileManager {
     }
 
     @Override
-    public FileObject getData() {
-        return data;
+    public FileObject getPlayers() {
+        return players;
     }
 }

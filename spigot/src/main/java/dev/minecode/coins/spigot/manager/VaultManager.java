@@ -15,71 +15,61 @@ import org.spongepowered.configurate.ConfigurationNode;
 
 public class VaultManager {
 
-    private Economy econ;
-
-    private Plugin vaultPlugin;
+    private final Plugin vaultPlugin;
+    private Economy economy;
     private boolean vaultEnabled;
 
-    // config
-    private boolean vaultConfig;
     private long refreshDelay;
 
     public VaultManager() {
         if ((vaultPlugin = CoinsSpigot.getInstance().getServer().getPluginManager().getPlugin("Vault")) == null) return;
 
         ConfigurationNode conf = CoinsAPI.getInstance().getFileManager().getConfig().getConf();
-        vaultConfig = conf.node("vault").getBoolean();
+        boolean vaultConfig = conf.node("vault").getBoolean();
         refreshDelay = conf.node("refreshDelay").getLong();
 
         if (!vaultConfig || !vaultPlugin.isEnabled()) return;
 
         if (setupEconomy()) {
             vaultEnabled = true;
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL())
+            if (CoreAPI.getInstance().isUsingSQL())
                 runEconomyChecker();
         }
     }
 
     public boolean setupEconomy() {
         Economy vaultEcoHook = new EconomyIntegration();
-        Bukkit.getServicesManager().register(Economy.class, vaultEcoHook, vaultPlugin, ServicePriority.High);
+        Bukkit.getServicesManager().register(Economy.class, vaultEcoHook, vaultPlugin, ServicePriority.Highest);
 
         RegisteredServiceProvider<Economy> rsp = CoinsSpigot.getInstance().getServer().getServicesManager().getRegistration(Economy.class);
         if (rsp == null) return false;
 
-        return (econ = rsp.getProvider()) != null;
+        return (economy = rsp.getProvider()) != null;
     }
 
     public void runEconomyChecker() {
-        Bukkit.getScheduler().scheduleSyncRepeatingTask(CoinsSpigot.getInstance(), new Runnable() {
-            @Override
-            public void run() {
-                for (Player player : Bukkit.getOnlinePlayers()) {
-                    CoinsPlayer coinsPlayer = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(player.getUniqueId());
-                    Economy economy = CoinsSpigot.getInstance().getVaultManager().getEcon();
-                    double vaultBalance = economy.getBalance(player);
+        Bukkit.getScheduler().scheduleSyncRepeatingTask(CoinsSpigot.getInstance(), () -> {
+            for (Player player : Bukkit.getOnlinePlayers()) {
+                CoinsPlayer coinsPlayer = CoinsAPI.getInstance().getPlayerManager().getPlayer(player.getUniqueId());
+                Economy economy = CoinsSpigot.getInstance().getVaultManager().getEconomy();
+                double vaultBalance = economy.getBalance(player);
 
-                    if (vaultBalance != coinsPlayer.getCoins()) {
-                        double diff = coinsPlayer.getCoins() - vaultBalance;
-                        if (diff < 0)
-                            CoinsSpigot.getInstance().getVaultManager().getEcon().withdrawPlayer(player, diff * (-1));
-                        else
-                            CoinsSpigot.getInstance().getVaultManager().getEcon().depositPlayer(player, diff);
-                    }
+                if (vaultBalance != coinsPlayer.getCoins()) {
+                    double diff = coinsPlayer.getCoins() - vaultBalance;
+                    if (diff < 0)
+                        CoinsSpigot.getInstance().getVaultManager().getEconomy().withdrawPlayer(player, diff * (-1));
+                    else
+                        CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(player, diff);
                 }
             }
         }, 0, refreshDelay);
     }
 
-    public Economy getEcon() {
-        return econ;
+    public Economy getEconomy() {
+        return economy;
     }
 
     public boolean isVaultEnabled() {
         return vaultEnabled;
-    }
-
-    public void setVaultEnabled(boolean vaultEnabled) {
-        this.vaultEnabled = vaultEnabled;
     }
 }

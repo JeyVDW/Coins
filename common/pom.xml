@@ -15,18 +15,18 @@
     <url>https://github.com/MineCodeDEV/Coins/tree/master/common</url>
 
     <dependencies>
-        <!-- MineCode Coins -->
+        <!-- MineCodeDEV Coins -->
         <dependency>
             <groupId>dev.minecode.coins</groupId>
             <artifactId>api</artifactId>
             <version>0.1.0-Pre.2</version>
         </dependency>
 
-        <!-- MineCode Core -->
+        <!-- MineCodeDEV Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>common</artifactId>
-            <version>0.1.0-Pre.48</version>
+            <version>0.1.0-Pre.80</version>
         </dependency>
     </dependencies>
 

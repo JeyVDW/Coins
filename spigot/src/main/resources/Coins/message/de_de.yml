@@ -7,18 +7,16 @@
 # | $$ \/  | $$| $$| $$  | $$|  $$$$$$$|  $$$$$$/|  $$$$$$/|  $$$$$$$|  $$$$$$$
 # |__/     |__/|__/|__/  |__/ \_______/ \______/  \______/  \_______/ \_______/
 
-noPermission: "&cCoins &8» &7Dazu hast du keine Rechte"
-noPlayer: "&cCoins &8» &7Dies kannst du nur als Spieler"
-playerNotOnline: "&cCoins &8» &7Der Spieler &b%targetName% &7ist nicht online"
-playerNotExists: "&cCoins &8» &7Der Spieler &b%arg-1% &7existiert nicht"
-noValidNumber: "&cCoins &8» &7Bitte gib eine gültige Zahl ein"
-syntax: "&9Coins &8» &7Du kannst die folgenden Befehle ausführen:"
 coins:
   command:
+    noPermission: "&cCoins &8» &7Dazu hast du keine Rechte"
     syntax:
+      info: "&9Coins &8» &7Du kannst die folgenden Befehle ausführen:"
       use: "&8- &6/coins &8- &7Zeige Deine Coins an"
       see: "&8- &6/coins [Name] &8- &7Zeige die Coins eines Spielers an"
       modify: "&8- &6/coins [Name] add/remove/set [Betrag] &8- &7Ändere die Coins eines Spielers"
+    playerNotExists: "&cCoins &8» &7Der Spieler &b%arg-1% &7existiert nicht"
+    noValidNumber: "&cCoins &8» &7Bitte gib eine gültige Zahl ein"
     # /coins
     yourcoins: "&9Coins &8» &7Du hast derzeit &6%executerCoins% &7Coins"
     # /coins [player]

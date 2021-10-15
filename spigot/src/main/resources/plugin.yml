@@ -4,12 +4,12 @@ description: An universal economy plugin for Minecraft
 
 main: dev.minecode.coins.spigot.CoinsSpigot
 version: 0.1.0-Pre.2
-api-version: 1.8.8
+api-version: 1.17
 softdepend:
   - Vault
   - PlaceholderAPI
 
-author: MineCode
+author: MineCodeDEV
 authors:
   - Jerome
   - Leonard

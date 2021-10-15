@@ -7,12 +7,10 @@ import java.util.UUID;
 
 public interface PlayerManager {
 
-    CoinsPlayer getCoinsPlayer(CorePlayer corePlayer);
+    CoinsPlayer getPlayer(CorePlayer corePlayer);
 
-    CoinsPlayer getCoinsPlayer(int id);
+    CoinsPlayer getPlayer(UUID uuid);
 
-    CoinsPlayer getCoinsPlayer(UUID uuid);
-
-    CoinsPlayer getCoinsPlayer(String name);
+    CoinsPlayer getPlayer(String name);
 
 }

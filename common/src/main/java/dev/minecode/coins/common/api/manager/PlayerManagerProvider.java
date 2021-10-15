@@ -2,36 +2,33 @@ package dev.minecode.coins.common.api.manager;
 
 import dev.minecode.coins.api.manager.PlayerManager;
 import dev.minecode.coins.api.object.CoinsPlayer;
-import dev.minecode.coins.common.CoinsCommon;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 
 import java.util.UUID;
 
-public class PlayerManagerProvider implements PlayerManager {
+public abstract class PlayerManagerProvider implements PlayerManager {
 
     @Override
-    public CoinsPlayer getCoinsPlayer(CorePlayer corePlayer) {
+    public CoinsPlayer getPlayer(CorePlayer corePlayer) {
         if (corePlayer == null) return null;
-        return CoinsCommon.getInstance().getCoinsPlayerAddon().newCoinsPlayer(corePlayer);
+        return newPlayer(corePlayer);
     }
 
     @Override
-    public CoinsPlayer getCoinsPlayer(int id) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getPlayerManager().getCorePlayer(id);
-        return getCoinsPlayer(corePlayer);
+    public CoinsPlayer getPlayer(UUID uuid) {
+        CorePlayer corePlayer = CoreAPI.getInstance().getPlayerManager().getPlayer(uuid);
+        if (corePlayer == null) return null;
+        return newPlayer(corePlayer);
     }
 
     @Override
-    public CoinsPlayer getCoinsPlayer(UUID uuid) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getPlayerManager().getCorePlayer(uuid);
-        return getCoinsPlayer(corePlayer);
+    public CoinsPlayer getPlayer(String name) {
+        CorePlayer corePlayer = CoreAPI.getInstance().getPlayerManager().getPlayer(name);
+        if (corePlayer == null) return null;
+        return newPlayer(corePlayer);
     }
 
-    @Override
-    public CoinsPlayer getCoinsPlayer(String name) {
-        CorePlayer corePlayer = CoreAPI.getInstance().getPlayerManager().getCorePlayer(name);
-        return getCoinsPlayer(corePlayer);
-    }
+    public abstract CoinsPlayer newPlayer(CorePlayer corePlayer);
 
 }

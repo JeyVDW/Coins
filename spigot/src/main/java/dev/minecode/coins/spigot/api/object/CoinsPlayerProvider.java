@@ -16,48 +16,56 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.UUID;
 
 public class CoinsPlayerProvider implements CoinsPlayer {
 
-    private static FileObject fileObject = CoinsAPI.getInstance().getFileManager().getData();
-    private static ConfigurationNode conf = fileObject.getConf();
-
-    private static int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
+    private static final FileObject playersFileObject = CoinsAPI.getInstance().getFileManager().getPlayers();
+    private static final int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
+    private static ConfigurationNode playersConf;
 
     private int coins;
-    private CorePlayer corePlayer;
+    private final CorePlayer corePlayer;
     private boolean exists;
     private Statement statement;
     private ResultSet resultSet;
 
     public CoinsPlayerProvider(CorePlayer corePlayer) {
         this.corePlayer = corePlayer;
+        makeInstances();
         load();
     }
 
-    private static void create(int id, int coins) {
+    private static void create(UUID uuid, int coins) {
         try {
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
-                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_coins (ID, COINS) VALUES (" + id + ", " + coins + ")");
+            if (CoreAPI.getInstance().isUsingSQL()) {
+                CoreAPI.getInstance().getDatabaseManager().getStatement().executeUpdate("INSERT INTO minecode_coins (UUID, COINS) VALUES ('" + uuid + "', " + coins + ")");
             } else {
-                conf.node(String.valueOf(id), "coins").set(coins);
+                playersConf.node(String.valueOf(uuid), "coins").set(coins);
             }
         } catch (SQLException | SerializationException throwables) {
             throwables.printStackTrace();
         }
     }
 
+    public void makeInstances() {
+        if (CoreAPI.getInstance().isUsingSQL())
+            statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
+        else
+            playersConf = playersFileObject.getConf();
+    }
+
     public void load() {
         try {
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
+            if (CoreAPI.getInstance().isUsingSQL()) {
                 statement = CoreAPI.getInstance().getDatabaseManager().getStatement();
-                resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE ID = " + corePlayer.getID() + "");
+                resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE UUID = '" + corePlayer.getUuid() + "'");
                 exists = resultSet.next();
             } else
-                exists = !conf.node(String.valueOf(corePlayer.getID())).empty();
+                exists = !playersConf.node(String.valueOf(corePlayer.getUuid())).empty();
 
             if (!exists) {
-                create(corePlayer.getID(), startCoins);
+                create(corePlayer.getUuid(), startCoins);
             }
 
             reload();
@@ -69,14 +77,14 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     @Override
     public boolean reload() {
         try {
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
-                resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE ID = '" + corePlayer.getID() + "'");
+            if (CoreAPI.getInstance().isUsingSQL()) {
+                resultSet = statement.executeQuery("SELECT * FROM minecode_coins WHERE UUID = '" + corePlayer.getUuid() + "'");
                 if (resultSet.next()) {
                     coins = resultSet.getInt("COINS");
                     return true;
                 } else load();
             } else {
-                coins = conf.node(String.valueOf(corePlayer.getID()), "coins").getInt();
+                coins = playersConf.node(String.valueOf(corePlayer.getUuid()), "coins").getInt();
                 return true;
             }
         } catch (SQLException throwables) {
@@ -91,13 +99,13 @@ public class CoinsPlayerProvider implements CoinsPlayer {
         try {
             corePlayer.reload();
 
-            if (CoreAPI.getInstance().getPluginManager().isUsingSQL()) {
+            if (CoreAPI.getInstance().isUsingSQL()) {
                 resultSet.updateDouble("COINS", coins);
                 resultSet.updateRow();
                 return true;
             } else {
-                conf.node(String.valueOf(corePlayer.getID()), "coins").set(coins);
-                fileObject.save();
+                playersConf.node(String.valueOf(corePlayer.getUuid()), "coins").set(coins);
+                playersFileObject.save();
                 return true;
             }
         } catch (SQLException | SerializationException throwables) {
@@ -120,12 +128,12 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     public boolean setCoins(int coins) {
         if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled()) {
             OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(getCorePlayer().getUuid());
-            double vaultBalance = CoinsSpigot.getInstance().getVaultManager().getEcon().getBalance(offlinePlayer);
+            double vaultBalance = CoinsSpigot.getInstance().getVaultManager().getEconomy().getBalance(offlinePlayer);
             double diff = coins - vaultBalance;
             if (diff < 0) {
-                return CoinsSpigot.getInstance().getVaultManager().getEcon().withdrawPlayer(offlinePlayer, diff * (-1)).type == EconomyResponse.ResponseType.SUCCESS;
+                return CoinsSpigot.getInstance().getVaultManager().getEconomy().withdrawPlayer(offlinePlayer, diff * (-1)).type == EconomyResponse.ResponseType.SUCCESS;
             } else
-                return CoinsSpigot.getInstance().getVaultManager().getEcon().depositPlayer(offlinePlayer, diff).type == EconomyResponse.ResponseType.SUCCESS;
+                return CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(offlinePlayer, diff).type == EconomyResponse.ResponseType.SUCCESS;
         }
 
         CoinsAPI.getInstance().getEventManager().callEvent(new CoinsUpdateEvent(this, coins));
@@ -142,7 +150,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     @Override
     public boolean addCoins(int coins) {
         if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
-            return CoinsSpigot.getInstance().getVaultManager().getEcon().depositPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
+            return CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
 
         return setCoinsWithoutVault(this.coins + coins);
     }
@@ -154,7 +162,7 @@ public class CoinsPlayerProvider implements CoinsPlayer {
     @Override
     public boolean removeCoins(int coins) {
         if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
-            return CoinsSpigot.getInstance().getVaultManager().getEcon().withdrawPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
+            return CoinsSpigot.getInstance().getVaultManager().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
 
         return setCoinsWithoutVault(this.coins - coins);
     }

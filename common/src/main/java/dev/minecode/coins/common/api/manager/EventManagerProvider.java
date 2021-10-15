@@ -13,25 +13,12 @@ import java.util.ArrayList;
 
 public class EventManagerProvider implements EventManager {
 
-    private static ArrayList<CoinsListener> coinsListeners = coinsListeners = new ArrayList<>();
-
     public EventManagerProvider() {
     }
 
     public static ArrayList<CoinsListener> getCoinsListeners() {
         return coinsListeners;
     }
-
-    @Override
-    public void registerListener(CoinsListener listener) {
-        coinsListeners.add(listener);
-    }
-
-    @Override
-    public void unregisterListener(CoinsListener listener) {
-        coinsListeners.remove(listener);
-    }
-
     @Override
     public <T extends CoinsEvent> T callEvent(T coreEvent) {
         ArrayList<ListenerObject> listenerObjects = new ArrayList<>();
@@ -48,10 +35,23 @@ public class EventManagerProvider implements EventManager {
             }
         }
 
-        for (int i = 2; i <= 0; i--)
+        for (int i = 2; i >= 0; i--)
             callEventsByPriority(listenerObjects, i);
         return coreEvent;
     }
+
+    private static ArrayList<CoinsListener> coinsListeners = coinsListeners = new ArrayList<>();
+
+    @Override
+    public void registerListener(CoinsListener listener) {
+        coinsListeners.add(listener);
+    }
+
+    @Override
+    public void unregisterListener(CoinsListener listener) {
+        coinsListeners.remove(listener);
+    }
+
 
     private void callEventsByPriority(ArrayList<ListenerObject> listenerObjects, int priority) {
         for (ListenerObject listenerObject : listenerObjects) {
@@ -64,4 +64,6 @@ public class EventManagerProvider implements EventManager {
             }
         }
     }
+
+
 }

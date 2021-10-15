@@ -30,66 +30,39 @@
     </repositories>
 
     <dependencies>
-        <!-- MineCode Coins -->
+        <!-- MineCodeDEV Coins -->
         <dependency>
             <groupId>dev.minecode.coins</groupId>
             <artifactId>common</artifactId>
             <version>0.1.0-Pre.2</version>
         </dependency>
 
-        <!-- MineCode Core -->
+        <!-- MineCodeDEV Core -->
         <dependency>
             <groupId>dev.minecode.core</groupId>
             <artifactId>spigot</artifactId>
-            <version>0.1.0-Pre.48</version>
+            <version>0.1.0-Pre.80</version>
         </dependency>
 
-        <!-- Spigot -->
+        <!-- SpigotMC Spigot -->
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.8.8-R0.1-SNAPSHOT</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.yaml</groupId>
-                    <artifactId>snakeyaml</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.code.gson</groupId>
-                    <artifactId>gson</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>com.google.guava</groupId>
-                    <artifactId>guava</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>net.md-5</groupId>
-                    <artifactId>bungeecord-chat</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.17.1-R0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- MilkBowl Vault -->
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
             <artifactId>VaultAPI</artifactId>
-            <version>1.7</version>
-            <scope>provided</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.bukkit</groupId>
-                    <artifactId>bukkit</artifactId>
-                </exclusion>
-            </exclusions>
+            <version>1.7.1</version>
         </dependency>
 
         <!-- clip PlaceholderAPI -->
         <dependency>
             <groupId>me.clip</groupId>
             <artifactId>placeholderapi</artifactId>
-            <version>2.10.9</version>
-            <scope>provided</scope>
+            <version>2.10.10</version>
         </dependency>
     </dependencies>
 
@@ -138,16 +111,6 @@
                                     <include>com.github.MilkBowl:VaultAPI</include>
                                 </includes>
                             </artifactSet>
-                            <relocations>
-                                <relocation>
-                                    <pattern>dev.minecode.core</pattern>
-                                    <shadedPattern>dev.minecode.coins.shade.core</shadedPattern>
-                                </relocation>
-                                <relocation>
-                                    <pattern>org.yaml</pattern>
-                                    <shadedPattern>dev.minecode.coins.shade.yaml</shadedPattern>
-                                </relocation>
-                            </relocations>
                             <filters>
                                 <filter>
                                     <artifact>*:*</artifact>

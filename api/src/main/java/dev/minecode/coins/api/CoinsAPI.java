@@ -4,7 +4,7 @@ import dev.minecode.coins.api.manager.EventManager;
 import dev.minecode.coins.api.manager.FileManager;
 import dev.minecode.coins.api.manager.PlayerManager;
 import dev.minecode.coins.api.manager.ReplaceManager;
-import dev.minecode.core.api.CoreAPI;
+import dev.minecode.core.api.object.CorePlugin;
 import dev.minecode.core.api.object.Language;
 import dev.minecode.core.api.object.LanguageAbstract;
 import net.md_5.bungee.api.chat.BaseComponent;
@@ -23,12 +23,6 @@ public abstract class CoinsAPI {
     }
 
 
-    // CoreAPI
-    private static CoreAPI getCoreAPI() {
-        return CoreAPI.getInstance();
-    }
-
-
     // Manager
     public abstract EventManager getEventManager();
 
@@ -41,5 +35,8 @@ public abstract class CoinsAPI {
     public abstract ReplaceManager getReplaceManager(BaseComponent[] message);
 
     public abstract ReplaceManager getReplaceManager(Language language, LanguageAbstract path);
+
+    // Getter & Setter
+    public abstract CorePlugin getThisCorePlugin();
 
 }

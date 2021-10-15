@@ -4,6 +4,7 @@ import dev.minecode.coins.api.CoinsAPI;
 import dev.minecode.coins.api.object.CoinsPlayer;
 import dev.minecode.coins.bungeecord.object.CoinsLanguageBungeeCord;
 import dev.minecode.core.api.CoreAPI;
+import dev.minecode.core.api.object.CorePlugin;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -16,6 +17,9 @@ import java.util.List;
 import java.util.Set;
 
 public class CoinsCommand extends Command implements TabExecutor {
+
+    private final CorePlugin corePlugin = CoinsAPI.getInstance().getThisCorePlugin();
+
     public CoinsCommand(String name) {
         super(name);
     }
@@ -26,16 +30,16 @@ public class CoinsCommand extends Command implements TabExecutor {
 
     @Override
     public void execute(CommandSender commandSender, String[] args) {
-        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(commandSender.getName());
+        CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getPlayer(commandSender.getName());
 
         if (!commandSender.hasPermission("coins.use")) {
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noPermission)
+            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
                     .args("coins", args, "arg").chatcolorAll().getBaseMessage());
             return;
         }
 
         if (args.length == 0) {
-            commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandYourcoins)
+            commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandYourcoins)
                     .coinsPlayer(coinsExecuter, "executer")
                     .args("coins", args, "arg").chatcolorAll().getBaseMessage());
             return;
@@ -48,20 +52,20 @@ public class CoinsCommand extends Command implements TabExecutor {
             }
 
             if (!commandSender.hasPermission("coins.see")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noPermission)
+                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                 return;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getPlayer(args[0]);
 
             if (coinsTarget == null) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.playernotExists)
+                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandPlayerNotExists)
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                 return;
             }
 
-            commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSee)
+            commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSee)
                     .coinsPlayer(coinsTarget, "target")
                     .args("coins", args, "arg").chatcolorAll().getBaseMessage());
             return;
@@ -69,15 +73,15 @@ public class CoinsCommand extends Command implements TabExecutor {
 
         if (args.length == 3) {
             if (!commandSender.hasPermission("coins.modify")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noPermission)
+                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                 return;
             }
 
-            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getCoinsPlayer(args[0]);
+            CoinsPlayer coinsTarget = CoinsAPI.getInstance().getPlayerManager().getPlayer(args[0]);
 
             if (coinsTarget == null) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.playernotExists)
+                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandPlayerNotExists)
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                 return;
             }
@@ -87,7 +91,7 @@ public class CoinsCommand extends Command implements TabExecutor {
                 amount = Integer.parseInt(args[2]);
             } catch (NumberFormatException e) {
                 commandSender.sendMessage(
-                        CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noValidNumber).chatcolorAll().getBaseMessage());
+                        CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoValidNumber).chatcolorAll().getBaseMessage());
                 return;
             }
 
@@ -95,14 +99,14 @@ public class CoinsCommand extends Command implements TabExecutor {
                 int oldCoins = coinsTarget.getCoins();
 
                 if (!coinsTarget.addCoins(amount)) {
-                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandAddFailed)
+                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandAddFailed)
                             .coinsPlayer(coinsTarget, "target")
                             .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                     return;
                 }
 
                 coinsTarget.save();
-                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandAddSuccess)
+                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandAddSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
@@ -113,14 +117,14 @@ public class CoinsCommand extends Command implements TabExecutor {
                 int oldCoins = coinsTarget.getCoins();
 
                 if (!coinsTarget.removeCoins(amount)) {
-                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandRemoveFailed)
+                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandRemoveFailed)
                             .coinsPlayer(coinsTarget, "target")
                             .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                     return;
                 }
 
                 coinsTarget.save();
-                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandRemoveSuccess)
+                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandRemoveSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
@@ -131,14 +135,14 @@ public class CoinsCommand extends Command implements TabExecutor {
                 int oldCoins = coinsTarget.getCoins();
 
                 if (!coinsTarget.setCoins(amount)) {
-                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSetFailed)
+                    commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSetFailed)
                             .coinsPlayer(coinsTarget, "target")
                             .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                     return;
                 }
 
                 coinsTarget.save();
-                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSetSuccess)
+                commandSender.sendMessage(CoinsAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSetSuccess)
                         .coinsPlayer(coinsTarget, "target")
                         .replaceAll("%oldCoins%", String.valueOf(oldCoins))
                         .args("coins", args, "arg").chatcolorAll().getBaseMessage());
@@ -187,15 +191,15 @@ public class CoinsCommand extends Command implements TabExecutor {
 
     private void syntaxMessage(CommandSender commandSender, CoinsPlayer coinsPlayer) {
         if (!commandSender.hasPermission("coins.use") && !commandSender.hasPermission("coins.see") && !commandSender.hasPermission("coins.modify")) {
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.noPermission).chatcolorAll().getBaseMessage());
+            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission).chatcolorAll().getBaseMessage());
             return;
         }
-        commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.syntax).chatcolorAll().getBaseMessage());
+        commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSyntaxInfo).chatcolorAll().getBaseMessage());
         if (commandSender.hasPermission("coins.use"))
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSyntaxUse).chatcolorAll().getBaseMessage());
+            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSyntaxUse).chatcolorAll().getBaseMessage());
         if (commandSender.hasPermission("coins.see"))
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSyntaxSee).chatcolorAll().getBaseMessage());
+            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSyntaxSee).chatcolorAll().getBaseMessage());
         if (commandSender.hasPermission("coins.modify"))
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(), CoinsLanguageBungeeCord.coinsCommandSyntaxModify).chatcolorAll().getBaseMessage());
+            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandSyntaxModify).chatcolorAll().getBaseMessage());
     }
 }
