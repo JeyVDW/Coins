@@ -33,8 +33,7 @@ public class CoinsCommand extends Command implements TabExecutor {
         CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getPlayer(commandSender.getName());
 
         if (!commandSender.hasPermission("coins.use")) {
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
-                    .args("coins", args, "arg").chatcolorAll().getBaseMessage());
+            syntaxMessage(commandSender, coinsExecuter);
             return;
         }
 
@@ -46,14 +45,8 @@ public class CoinsCommand extends Command implements TabExecutor {
         }
 
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("help")) {
+            if (args[0].equalsIgnoreCase("help") || !commandSender.hasPermission("coins.see")) {
                 syntaxMessage(commandSender, coinsExecuter);
-                return;
-            }
-
-            if (!commandSender.hasPermission("coins.see")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
-                        .args("coins", args, "arg").chatcolorAll().getBaseMessage());
                 return;
             }
 
@@ -74,8 +67,7 @@ public class CoinsCommand extends Command implements TabExecutor {
         if (args.length == 3) {
             if (args[1].equalsIgnoreCase("pay")) {
                 if (!commandSender.hasPermission("coins.pay")) {
-                    commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
-                            .args("coins", args, "arg").chatcolorAll().getBaseMessage());
+                    syntaxMessage(commandSender, coinsExecuter);
                     return;
                 }
 
@@ -139,8 +131,7 @@ public class CoinsCommand extends Command implements TabExecutor {
             }
 
             if (!commandSender.hasPermission("coins.modify")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission)
-                        .args("coins", args, "arg").chatcolorAll().getBaseMessage());
+                syntaxMessage(commandSender, coinsExecuter);
                 return;
             }
 
@@ -255,7 +246,7 @@ public class CoinsCommand extends Command implements TabExecutor {
     }
 
     private void syntaxMessage(CommandSender commandSender, CoinsPlayer coinsPlayer) {
-        if (!commandSender.hasPermission("coins.use") && !commandSender.hasPermission("coins.see") && !commandSender.hasPermission("coins.modify")) {
+        if (!commandSender.hasPermission("coins.use")) {
             commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageBungeeCord.coinsCommandNoPermission).chatcolorAll().getBaseMessage());
             return;
         }

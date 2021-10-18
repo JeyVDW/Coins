@@ -17,16 +17,16 @@ public class CoinsUpdateEvent extends Event {
         this.oldCoins = oldCoins;
     }
 
+    public static HandlerList getHandlerList() {
+        return HANDLERS;
+    }
+
     public CoinsPlayer getCoinsPlayer() {
         return coinsPlayer;
     }
 
     public double getOldCoins() {
         return oldCoins;
-    }
-
-    public static HandlerList getHandlerList() {
-        return HANDLERS;
     }
 
     @NotNull

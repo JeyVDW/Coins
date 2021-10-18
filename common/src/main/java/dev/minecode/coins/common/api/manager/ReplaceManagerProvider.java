@@ -11,7 +11,6 @@ import net.md_5.bungee.chat.ComponentSerializer;
 public class ReplaceManagerProvider implements ReplaceManager {
 
     private String message;
-    private Language language;
 
     public ReplaceManagerProvider(String message) {
         this.message = message;
@@ -22,7 +21,6 @@ public class ReplaceManagerProvider implements ReplaceManager {
     }
 
     public ReplaceManagerProvider(Language language, LanguageAbstract path) {
-        this.language = language;
         this.message = CoreAPI.getInstance().getLanguageManager().getString(language, path);
     }
 

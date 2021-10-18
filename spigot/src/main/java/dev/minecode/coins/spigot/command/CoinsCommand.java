@@ -28,8 +28,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
         CoinsPlayer coinsExecuter = CoinsAPI.getInstance().getPlayerManager().getPlayer(commandSender.getName());
 
         if (!commandSender.hasPermission("coins.use")) {
-            commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageSpigot.coinsCommandNoPermission)
-                    .args(command.getName(), args, "arg").chatcolorAll().getMessage());
+            syntaxMessage(commandSender, coinsExecuter);
             return true;
         }
 
@@ -41,14 +40,8 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            if (args[0].equalsIgnoreCase("help")) {
+            if (args[0].equalsIgnoreCase("help") || !commandSender.hasPermission("coins.see")) {
                 syntaxMessage(commandSender, coinsExecuter);
-                return true;
-            }
-
-            if (!commandSender.hasPermission("coins.see")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageSpigot.coinsCommandNoPermission)
-                        .args(command.getName(), args, "arg").chatcolorAll().getMessage());
                 return true;
             }
 
@@ -69,8 +62,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
         if (args.length == 3) {
             if (args[1].equalsIgnoreCase("pay")) {
                 if (!commandSender.hasPermission("coins.pay")) {
-                    commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageSpigot.coinsCommandNoPermission)
-                            .args(command.getName(), args, "arg").chatcolorAll().getMessage());
+                    syntaxMessage(commandSender, coinsExecuter);
                     return true;
                 }
 
@@ -139,8 +131,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
             }
 
             if (!commandSender.hasPermission("coins.modify")) {
-                commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsExecuter.getCorePlayer().getLanguage(corePlugin), CoinsLanguageSpigot.coinsCommandNoPermission)
-                        .args(command.getName(), args, "arg").chatcolorAll().getMessage());
+                syntaxMessage(commandSender, coinsExecuter);
                 return true;
             }
 
@@ -268,7 +259,7 @@ public class CoinsCommand implements CommandExecutor, TabCompleter {
     }
 
     private void syntaxMessage(CommandSender commandSender, CoinsPlayer coinsPlayer) {
-        if (!commandSender.hasPermission("coins.use") && !commandSender.hasPermission("coins.see") && !commandSender.hasPermission("coins.modify")) {
+        if (!commandSender.hasPermission("coins.use")) {
             commandSender.sendMessage(CoreAPI.getInstance().getReplaceManager(coinsPlayer.getCorePlayer().getLanguage(corePlugin), CoinsLanguageSpigot.coinsCommandNoPermission).chatcolorAll().getMessage());
             return;
         }
