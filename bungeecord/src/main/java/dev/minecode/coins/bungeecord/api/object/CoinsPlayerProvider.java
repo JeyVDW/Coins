@@ -13,12 +13,9 @@ import org.spongepowered.configurate.serialize.SerializationException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.HashMap;
 import java.util.UUID;
 
 public class CoinsPlayerProvider implements CoinsPlayer {
-
-    private static final HashMap<CorePlayer, CoinsPlayer> coinsPlayers = new HashMap<>();
 
     private static final FileObject playersFileObject = CoinsAPI.getInstance().getFileManager().getPlayers();
     private static final int startCoins = CoinsAPI.getInstance().getFileManager().getConfig().getConf().node("startCoins").getInt();
