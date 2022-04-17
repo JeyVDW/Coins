@@ -1,8 +1,8 @@
 package dev.minecode.coins.spigot.object;
 
 import dev.minecode.coins.api.CoinsAPI;
+import dev.minecode.coins.api.object.CoinsPlayer;
 import dev.minecode.coins.spigot.CoinsSpigot;
-import dev.minecode.coins.spigot.api.object.CoinsPlayerProvider;
 import dev.minecode.core.api.CoreAPI;
 import net.milkbowl.vault.economy.Economy;
 import net.milkbowl.vault.economy.EconomyResponse;
@@ -118,11 +118,12 @@ public class EconomyIntegration implements Economy {
 
         if (amount < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
-        if (finalBalance < 0)
+
+        CoinsPlayer corePlayer = CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
+
+        if (corePlayer.removeCoins(Integer.parseInt(String.valueOf(Math.round(amount)))))
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
-        corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -134,11 +135,12 @@ public class EconomyIntegration implements Economy {
 
         if (amount < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot withdraw negative funds");
-        if (finalBalance < 0)
+
+        CoinsPlayer corePlayer = CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
+
+        if (corePlayer.removeCoins(Integer.parseInt(String.valueOf(Math.round(amount)))))
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
-        corePlayer.removeCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -160,11 +162,9 @@ public class EconomyIntegration implements Economy {
 
         if (amount < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
-        if (finalBalance < 0)
-            return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
-        corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
+        CoinsPlayer corePlayer = CoinsAPI.getInstance().getPlayerManager().getPlayer(playerName);
+        corePlayer.addCoins(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
     }
@@ -176,11 +176,9 @@ public class EconomyIntegration implements Economy {
 
         if (amount < 0)
             return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Cannot deposit negative funds");
-        if (finalBalance < 0)
-            return new EconomyResponse(0, balance, EconomyResponse.ResponseType.FAILURE, "Insufficient funds");
 
-        CoinsPlayerProvider corePlayer = (CoinsPlayerProvider) CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
-        corePlayer.addCoinsWithoutVault(Integer.parseInt(String.valueOf(Math.round(amount))));
+        CoinsPlayer corePlayer = CoinsAPI.getInstance().getPlayerManager().getPlayer(offlinePlayer.getUniqueId());
+        corePlayer.addCoins(Integer.parseInt(String.valueOf(Math.round(amount))));
         corePlayer.save();
         return new EconomyResponse(amount, finalBalance, EconomyResponse.ResponseType.SUCCESS, null);
     }

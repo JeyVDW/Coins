@@ -2,14 +2,11 @@ package dev.minecode.coins.spigot.api.object;
 
 import dev.minecode.coins.api.CoinsAPI;
 import dev.minecode.coins.api.object.CoinsPlayer;
-import dev.minecode.coins.spigot.CoinsSpigot;
 import dev.minecode.coins.spigot.event.CoinsUpdateEvent;
 import dev.minecode.core.api.CoreAPI;
 import dev.minecode.core.api.object.CorePlayer;
 import dev.minecode.core.api.object.FileObject;
-import net.milkbowl.vault.economy.EconomyResponse;
 import org.bukkit.Bukkit;
-import org.bukkit.OfflinePlayer;
 import org.spongepowered.configurate.ConfigurationNode;
 import org.spongepowered.configurate.serialize.SerializationException;
 
@@ -125,20 +122,6 @@ public class CoinsPlayerProvider implements CoinsPlayer {
 
     @Override
     public boolean setCoins(int coins) {
-        if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled()) {
-            OfflinePlayer offlinePlayer = Bukkit.getOfflinePlayer(getCorePlayer().getUuid());
-            double vaultBalance = CoinsSpigot.getInstance().getVaultManager().getEconomy().getBalance(offlinePlayer);
-            double diff = coins - vaultBalance;
-            if (diff < 0) {
-                return CoinsSpigot.getInstance().getVaultManager().getEconomy().withdrawPlayer(offlinePlayer, diff * (-1)).type == EconomyResponse.ResponseType.SUCCESS;
-            } else
-                return CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(offlinePlayer, diff).type == EconomyResponse.ResponseType.SUCCESS;
-        }
-
-        return setCoinsWithoutVault(coins);
-    }
-
-    public boolean setCoinsWithoutVault(int coins) {
         if (coins < 0) return false;
 
         Bukkit.getPluginManager().callEvent(new CoinsUpdateEvent(this, this.coins));
@@ -149,25 +132,11 @@ public class CoinsPlayerProvider implements CoinsPlayer {
 
     @Override
     public boolean addCoins(int coins) {
-        if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
-            return CoinsSpigot.getInstance().getVaultManager().getEconomy().depositPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
-
-        return setCoinsWithoutVault(this.coins + coins);
-    }
-
-    public boolean addCoinsWithoutVault(int coins) {
-        return setCoinsWithoutVault(this.coins + coins);
+        return setCoins(this.coins + coins);
     }
 
     @Override
     public boolean removeCoins(int coins) {
-        if (CoinsSpigot.getInstance().getVaultManager().isVaultEnabled())
-            return CoinsSpigot.getInstance().getVaultManager().getEconomy().withdrawPlayer(Bukkit.getOfflinePlayer(getCorePlayer().getUuid()), coins).type == EconomyResponse.ResponseType.SUCCESS;
-
-        return setCoinsWithoutVault(this.coins - coins);
-    }
-
-    public boolean removeCoinsWithoutVault(int coins) {
-        return setCoinsWithoutVault(this.coins - coins);
+        return setCoins(this.coins - coins);
     }
 }
